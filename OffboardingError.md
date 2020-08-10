@@ -52,7 +52,7 @@ Remove-MsolUser -UserPrincipalName $upn -RemoveFromRecycleBin -Force:$true }Star
  
 
 4. **Note: Execution may take as long as 5-10 minutes.**
-Check if the execution has run properly by completing the following steps:
+Check if the execution has run properly by running the following:
 
 `$gmb = get-mailbox -Resultsize Unlimited | ?{$_.Name -match 'ctantest'}`
 

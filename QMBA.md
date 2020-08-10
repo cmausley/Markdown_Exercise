@@ -22,13 +22,13 @@ A Geneva dashboard providing current and recent historical views of this data by
 4. Networking failure, café failure.
  
 ## Diagnose and Recovery
-1. Once alerted, open the [QMBA dash board link](https://jarvis-west.dc.ad.msft.net/dashboard/share/91E7368C?overrides=%5b%7b%22query%22:%22//*%5bid='Environment'%5d%22,%22key%22:%22value%22,%22replacement%22:%22%22%7d,%7b%22query%22:%22//*%5bid='Region'%5d%22,%22key%22:%22value%22,%22replacement%22:%22%22%7d,%7b%22query%22:%22//*%5bid='Forest'%5d%22,%22key%22:%22value%22,%22replacement%22:%22%22%7d,%7b%22query%22:%22//*%5bid='AvailabilityGroup'%5d%22,%22key%22:%22value%22,%22replacement%22:%22%22%7d,%7b%22query%22:%22//*%5bid='Machine'%5d%22,%22key%22:%22value%22,%22replacement%22:%22%22%7d%5d%20) to retrieve the latest queue status. 
+1. Once alerted, open the [QMBA Dashboard](https://jarvis-west.dc.ad.msft.net/dashboard/share/91E7368C?overrides=%5b%7b%22query%22:%22//*%5bid='Environment'%5d%22,%22key%22:%22value%22,%22replacement%22:%22%22%7d,%7b%22query%22:%22//*%5bid='Region'%5d%22,%22key%22:%22value%22,%22replacement%22:%22%22%7d,%7b%22query%22:%22//*%5bid='Forest'%5d%22,%22key%22:%22value%22,%22replacement%22:%22%22%7d,%7b%22query%22:%22//*%5bid='AvailabilityGroup'%5d%22,%22key%22:%22value%22,%22replacement%22:%22%22%7d,%7b%22query%22:%22//*%5bid='Machine'%5d%22,%22key%22:%22value%22,%22replacement%22:%22%22%7d%5d%20) to retrieve the latest queue status. 
 Change this alert's urgency to Sev3 in forest while you are analyzing the alert.
 2. Run Transport on-call script Diagnose-QRBA.ps1.
 
     a. If the script alerts a single delivery server, move the mailbox database out of the delivery server. 
 
-    b. Run `check-deliveryhealth.sp1` in the "MDB Health Summary" session. If the MDBHealth is low and the error is DiskLatency, engage HA team. If many messages are throttled by Disklatency in the "MDB Throttling Summary" session, engage HA team.
+    b. Run `check-deliveryhealth.sp1` in the "MDB Health Summary" session. If the MDBHealth is low and the error is DiskLatency, engage HA team. If messages are throttled by Disklatency in the "MDB Throttling Summary" session, engage HA team.
     
     c. Check provision status for delivery server.
     
@@ -41,7 +41,7 @@ Change this alert's urgency to Sev3 in forest while you are analyzing the alert.
 * `Get-MailboxDatabase  $mdbGuid`         
     * This will locate where the mdb is mounted 
 
-4. Check Geneva dashboard in the "Top Machines" chart at top queued hub server. If the machine's queued message count is close to forest queued messages count, this is a hot hub issue.
+4. Check Geneva dashboard in the "Top Machines" chart at top queued hub server. If the machine's queued message count is similar to the forest queued messages count, this is a hot hub issue.
 
     a. Retrieve the last error of the queued messages to locate why messages were deferred in the delivery queue.
         `$q = get-queue -Server  BN3PR00MB0178  -Filter "DeliveryType -eq 'HttpDeliveryToExo'"`
@@ -64,4 +64,4 @@ Change this alert's urgency to Sev3 in forest while you are analyzing the alert.
 
     b. Check [Delivery Hang Dashboard](https://jarvis-west.dc.ad.msft.net/dashboard/O365_Transport/MailboxTransport/Delivery/DeliveryHangException) to check forest delivery hang status. If hang exception has significantly increased, it may cause messages to queue. Engage other team based on hang call stack. 
     
-    Note: Mitigation action may drop the messages causing the delivery hang. Check the message ID to find a cmmon pattern in the messages.
+    Note: Mitigation action may drop the messages causing the delivery hang. Check the message ID to find a common pattern in the messages.

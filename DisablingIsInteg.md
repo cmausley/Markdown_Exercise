@@ -6,13 +6,13 @@ Tuesday, September 11, 2018
 
 IsInteg is an automatic repair code which fixes corruptions in large mailboxes, occasionally taking a long time to complete.
 
-Customer migrations were stuck as IsInteg failed to complete and timed out after four hours. 
+Customer migrations may become stuck as IsInteg fails to complete, timing out after four hours. 
 
 The following was added for MidSet Corruptions so items are not lost when migrations run. 
 
-Without the following procedure, migration fails as items are lost during finalization. 
+Without the following procedure, migration fails as items are lost during finalization of IsInteg. 
 
-*Note: It is possible there is no midset corruptions at all. Skipping these steps at times may help the user.*
+*Note: It is possible the user may have no midset corruptions. If this is the case, you may skip the following steps.*
 
 ## Solution: 
  
@@ -21,7 +21,7 @@ The customer can run the repair with the following:
 
 This would run the repair before migration, preventing the error.
  
-If the error persists, attempt the following actions:
+If the error persists, attempt the following steps:
  
 1. Add the following workaround to disable IsInteg:
  
