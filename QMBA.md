@@ -25,10 +25,14 @@ A Geneva dashboard providing current and recent historical views of this data by
 1. Once you got the alert, please open the [QMBA dash board link](https://jarvis-west.dc.ad.msft.net/dashboard/share/91E7368C?overrides=%5b%7b%22query%22:%22//*%5bid='Environment'%5d%22,%22key%22:%22value%22,%22replacement%22:%22%22%7d,%7b%22query%22:%22//*%5bid='Region'%5d%22,%22key%22:%22value%22,%22replacement%22:%22%22%7d,%7b%22query%22:%22//*%5bid='Forest'%5d%22,%22key%22:%22value%22,%22replacement%22:%22%22%7d,%7b%22query%22:%22//*%5bid='AvailabilityGroup'%5d%22,%22key%22:%22value%22,%22replacement%22:%22%22%7d,%7b%22query%22:%22//*%5bid='Machine'%5d%22,%22key%22:%22value%22,%22replacement%22:%22%22%7d%5d%20) to get the latest queue status. 
 Please change this alert's urgency to Sev3 in alerting forest while you are investigating.
 2. Run Transport on-call script Diagnose-QRBA.ps1.
-    a. If the script point to single delivery server. Please move mailbox database out for that delivery server. 
-    b. Run check-deliveryhealth.sp1, in the "MDB Health Summary" session,  If the a mdb's MDBHealth is low and WorestREsource is DiskLatency, engage HA team. In the "MDB Throttling Summary" session, If many messages are throttled by Disklatency, engage HA team.
-    c. Please check provision status for that delivery server, we ever met delivery server is in MM but there still has mdb mounted on it.
-    d. You can refer this playbook(HttpDeliveryAvailabilityV2Monitor) to diagnose single delivery issue.
+
+<ol type="a">
+  <li>If the script point to single delivery server. Please move mailbox database out for that delivery server. </li>
+  <li>Run check-deliveryhealth.sp1, in the "MDB Health Summary" session,  If the a mdb's MDBHealth is low and WorestREsource is DiskLatency, engage HA team. In the "MDB Throttling Summary" session, If many messages are throttled by Disklatency, engage HA team.</li>
+  <li>Please check provision status for that delivery server, we ever met delivery server is in MM but there still has mdb mounted on it.</li>
+  <li>You can refer this playbook(HttpDeliveryAvailabilityV2Monitor) to diagnose single delivery issue.</li>
+</ol>
+
 3. In **ITAR** environment, Diagnose-QRBA.ps1 can't be ran, please ask Escort run below two commands to find hot delivery server.
 
 4. Check Geneva dashboard, in the "Top Machines" chart which is the top queued hub server, if top machine's queued message count is close to forest queued messages count, we can say this is hot hub issue.
