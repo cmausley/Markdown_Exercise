@@ -37,10 +37,10 @@ This monitor targets a specific Dag/Exo forest/Eop Forest. An alert is raised wh
 * Check the alert mail table at the bottom to find the major cause of failure (prominent error type) or OSP Page link in email
 * Identify the components involved in the failure e.g. 
     * UnableToConnect - Azure and EOP FD
- * ReplicationFailure - EXO Hub
- * ProxyDnsFailure - EOP FD, EXO Café
- * ProbeTimeout - Check if majority of last response is "250 Recipient OK" in OSP - EOP FD, EXO Hub
-  * Use "Get-NetworkConfig.ps1 -Server CY1USG02FT013 -PortConnectivity (2001:489a:2200:408::3):25 -ShowConnectionResponse" to see if the connection can be established and if we can read the banner successfully.
+    * ReplicationFailure - EXO Hub
+    * ProxyDnsFailure - EOP FD, EXO Café
+    * ProbeTimeout - Check if majority of last response is "250 Recipient OK" in OSP - EOP FD, EXO Hub
+        * Use "Get-NetworkConfig.ps1 -Server CY1USG02FT013 -PortConnectivity (2001:489a:2200:408::3):25 -ShowConnectionResponse" to see if the connection can be established and if we can read the banner successfully.
   `Port 25 Connectivity Status: Passed uses 12.803 ms Can't get remote side answer.`
  
 * **Prominent failure reasons can be found in the body of the alert email or in OSP.** See Outside-In probe prominent failure reason for more information.
@@ -52,9 +52,9 @@ Once you've determined the failure reason / error type, see the following pages 
  
 ### Step 2 - Retreive probe smtp sessions from protocol logs
 * After identifying the major area of failure - pick one error (from OSP) to get the protocol logs
- * Use Ehlo domain used for the probe
- * Pick up time of the probe 
- * Get Protocol logs
+    * Use Ehlo domain used for the probe
+    * Pick up time of the probe 
+    * Get Protocol logs
 * Use On-call script to diagnose the logs 
 * Help for using the script: [Get a XAM Probe's Protocol logs]
  
@@ -67,7 +67,7 @@ Issues Post BDAT command can be differentiated between Eop, and Exo related
 * EOP related issues - Setting up a proxy (Error Type PROXYDNSFAILURE) 
 * EXO related issues - Hub server busy/replication failure
 * To further identify the EOP/EXO ONLY issues take the following steps
- * Go to OSP
- * Look at scopes of the failures at EOP Forest level and check for availability at Dag level on the Right column of OSP health page
- * If errors are concentrated on a Dag - Check availability of SMTP Internet - Enterprise (Dag). 
- * If errors are distributed over multiple dags - then verify the prominent error type happens before BDAT command Or it is a proxy connection failure.
+    * Go to OSP
+    * Look at scopes of the failures at EOP Forest level and check for availability at Dag level on the Right column of OSP health page
+    * If errors are concentrated on a Dag - Check availability of SMTP Internet - Enterprise (Dag). 
+    * If errors are distributed over multiple dags - then verify the prominent error type happens before BDAT command Or it is a proxy connection failure.
