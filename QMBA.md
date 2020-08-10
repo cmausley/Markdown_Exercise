@@ -1,4 +1,4 @@
-# QMBA-MailboxDelivery-Forest
+# QMBA Mailbox Delivery, Forest
 Monday, September 24, 2018
 10:32 AM
 
@@ -26,24 +26,40 @@ A Geneva dashboard providing current and recent historical views of this data by
 Please change this alert's urgency to Sev3 in alerting forest while you are investigating.
 2. Run Transport on-call script Diagnose-QRBA.ps1.
 
-<ol type="a">
-  <li>If the script point to single delivery server. Please move mailbox database out for that delivery server. </li>
-  <li>Run check-deliveryhealth.sp1, in the "MDB Health Summary" session,  If the a mdb's MDBHealth is low and WorestREsource is DiskLatency, engage HA team. In the "MDB Throttling Summary" session, If many messages are throttled by Disklatency, engage HA team.</li>
-  <li>Please check provision status for that delivery server, we ever met delivery server is in MM but there still has mdb mounted on it.</li>
-  <li>You can refer this playbook(HttpDeliveryAvailabilityV2Monitor) to diagnose single delivery issue.</li>
-</ol>
+    <ol type="a">
+    <li>If the script point to single delivery server. Please move mailbox database out for that delivery server. </li>
+    <li>Run check-deliveryhealth.sp1, in the "MDB Health Summary" session,  If the a mdb's MDBHealth is low and WorestREsource is DiskLatency, engage HA team. In the "MDB Throttling Summary" session, If many messages are throttled by Disklatency, engage HA team.</li>
+    <li>Please check provision status for that delivery server, we ever met delivery server is in MM but there still has mdb mounted on it.</li>
+    <li>You can refer this playbook(HttpDeliveryAvailabilityV2Monitor) to diagnose single delivery issue.</li>
+    </ol>
 
 3. In **ITAR** environment, Diagnose-QRBA.ps1 can't be ran, please ask Escort run below two commands to find hot delivery server.
 
+* `Get-QueueDiversityV2 -forest`
+    * This will list top target mdb-> $mdbGuid
+* `Get-MailboxDatabase  $mdbGuid`         
+    * This will find where this mdb mounted 
+
+
 4. Check Geneva dashboard, in the "Top Machines" chart which is the top queued hub server, if top machine's queued message count is close to forest queued messages count, we can say this is hot hub issue.
+
     a. Get last error of queue messages. You can know why messages were deferred in the delivery queue.
-    
+        `$q = get-queue -Server  BN3PR00MB0178  -Filter "DeliveryType -eq 'HttpDeliveryToExo'"`
+        `$msg= get-message -Queue $q.Identity`
+        `$msg.LastError`
+
     b. Please download HubTransportHttpSendLogsHourly in hub server to check more detail for the last error.
+
     `Get-MachineLog -target $server -Log HubTransportHttpSendLogsHourly` 
+
     c. Restart MSExchangeTransport to mitigate first.
+
     `Request-RestartService_V2.ps1 -Target   $server -ServiceName  MSExchangeTransport  -Reason "reason"`
-5. If neither hot delivery nor hot hub.
-There may some special messages have some pattern got queued. 
+
+5. If neither hot delivery nor hot hub, there may some special messages have some pattern got queued. 
+
     a. Check messages that queued in delivery queue, check last error to see these queued messages have some pattern or not.
+
     `Get-QueueDiversityV2 -Forest -Priority normal  -QueueFilter {DeliveryType -eq 'HttpDeliveryToExo'}    -MinMessageLatency "01:00:00"`
+    
     b. Check [delivery hang dashboard](https://jarvis-west.dc.ad.msft.net/dashboard/O365_Transport/MailboxTransport/Delivery/DeliveryHangException) to see in the alerting forest delivery hang status, if hang exception increasing a lot, it may cause other normal messages queued. Please engage other team based on hang call stack. Mitigation action maybe drop the messages that cause delivery hang, you can check the message id to find message's common pattern. 
