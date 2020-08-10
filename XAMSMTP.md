@@ -36,7 +36,7 @@ This monitor targets a specific Dag/Exo forest/Eop Forest. An alert is raised wh
 ### Step 1 - Determine prominent failure reason (Error Type) and Smtp error responses
 * Check the alert mail table at the bottom to find the major cause of failure (prominent error type) or OSP Page link in email
 * Identify the components involved in the failure e.g. 
- * UnableToConnect - Azure and EOP FD
+    * UnableToConnect - Azure and EOP FD
  * ReplicationFailure - EXO Hub
  * ProxyDnsFailure - EOP FD, EXO Café
  * ProbeTimeout - Check if majority of last response is "250 Recipient OK" in OSP - EOP FD, EXO Hub
