@@ -10,7 +10,7 @@ Monitor the path of mail transmission through internet submission of mail to EOP
  
 ## What does the probe do?
 
-!(./assets/mailflow-image.jpg)
+!(/assets/mailflow-image.jpg)
 
 Each probe execution follows these steps:
 1. Resolve MX of monitoring tenant.
