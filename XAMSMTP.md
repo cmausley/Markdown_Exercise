@@ -41,7 +41,7 @@ This monitor targets a specific Dag/EXO forest/EOP. An alert is raised when the 
     * ProxyDnsFailure - EOP FD, EXO Café
     * ProbeTimeout - Check if "250 Recipient OK" in OSP, EOP FD, or EXO Hub is listed in last response.
         * Use `"Get-NetworkConfig.ps1 -Server CY1USG02FT013 -PortConnectivity (2001:489a:2200:408::3):25 -ShowConnectionResponse"` to see if the connection can be established and if banner can be read successfully.
-        <br>
+        
         `Port 25 Connectivity Status: Passed uses 12.803 ms Can't get remote side answer.`
  
 * **Prominent failure reasons can be found in body of alert email or in OSP.** 
