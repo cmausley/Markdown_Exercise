@@ -4,24 +4,30 @@ Tuesday, September 11, 2018
  
 ## Problem:
 
-Customer migrations were stuck behind IsInteg not completing and times out after 4 hrs.  This was added for MidSet Corruptions so can make sure missing items don't happen when the migrations run.  Without this, the migrations would happen and towards the end it would fail due to missing items during finalization. It is possible that there is no midset corruptions at all, so skipping this at times may help the user make progress with the moves.
- 
-IsInteg is an automatic repair code that was added to fix corruptions in large mailboxes. Auto repair could take a long time. Not sure how long we wait/make it best effort.
- 
-The customer can run the repair themselves 
-* New-MailboxRepairRequest   -CorruptionType MessageId
+IsInteg is an automatic repair code which fixes corruptions in large mailboxes, occasionally taking a long time to complete.
 
-This would run the repair beforehand and not cause this to be hit during migrations
+Customer migrations were stuck as IsInteg failed to complete and timed out after four hours. 
+
+The following was added for MidSet Corruptions so items are not lost when migrations run. 
+
+Without the following procedure, migration fails as items are lost during finalization. 
+
+*Note: It is possible there is no midset corruptions at all. Skipping these steps at times may help the user.*
  
-In the meantime, attempt two actions to fix the problem:
+The customer can run the repair with the following:
+* `New-MailboxRepairRequest-CorruptionType MessageId`
+
+This would run the repair before migration, preventing the error.
  
-1. Added the following workaround  to disable this
+If the error persists, attempt the following actions:
+ 
+1. Add the following workaround to disable IsInteg:
  
 `Set-ExchangeSettings MRS -CreateSettingsGroup -GroupName UnblockAlphaVilleUrbanismo -ConfigPairs @("DisableAutomaticRepair=true") -ScopeFilter "(MailboxGuid -eq '938ba0f8-9a45-432c-886b-9554bfe232aa')" -reason "CFL 876974 Fatal error JobStuckPermanentException has occurred" -ExpirationDate 10/01/2018`
  
 `Set-ExchangeSettings MRS -CreateSettingsGroup -GroupName 1484159UnblockISInteg -ConfigPairs @("DisableAutomaticRepair=true") -ScopeFilter "(OrganizationName -like 'emiratesfoundationae0.onmicrosoft.com')" -reason "CFL 1484159 Store IsInteg task is pending completion" -ExpirationDate 06/06/2020`
  
-2. Asked the customer to restart the move:
+2. Ask the customer to restart the migration, resulting in the following:
  
 9/10/2018 12:39:55 PM (SC1P152MB0910) Setting up ISInteg repair run up front for this mailbox since it's a large mailbox. "Primary mailbox size = 14533048984
 
