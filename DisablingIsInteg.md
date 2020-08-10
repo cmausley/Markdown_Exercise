@@ -13,6 +13,8 @@ The following was added for MidSet Corruptions so items are not lost when migrat
 Without the following procedure, migration fails as items are lost during finalization. 
 
 *Note: It is possible there is no midset corruptions at all. Skipping these steps at times may help the user.*
+
+## Solution: 
  
 The customer can run the repair with the following:
 * `New-MailboxRepairRequest-CorruptionType MessageId`
@@ -27,7 +29,7 @@ If the error persists, attempt the following actions:
  
 `Set-ExchangeSettings MRS -CreateSettingsGroup -GroupName 1484159UnblockISInteg -ConfigPairs @("DisableAutomaticRepair=true") -ScopeFilter "(OrganizationName -like 'emiratesfoundationae0.onmicrosoft.com')" -reason "CFL 1484159 Store IsInteg task is pending completion" -ExpirationDate 06/06/2020`
  
-2. Ask the customer to restart the migration, resulting in the following:
+2. Ask the customer to restart the migration, resulting in the following successful responses:
  
 9/10/2018 12:39:55 PM (SC1P152MB0910) Setting up ISInteg repair run up front for this mailbox since it's a large mailbox. "Primary mailbox size = 14533048984
 
