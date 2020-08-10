@@ -7,16 +7,18 @@ Reference: [Offboarding Error: Target user 'nnnUser' already has a primary mailb
 **To fix for a single Users**: Do as the reference link writes.
  
 **To fix for a large group of Users**:
- 
-`Example for carentan machine`
+ *Example for carentan machine*
 1. **Connect the onprem machine**
-2. **Get onprem mailbox**
-Open a Powershell window as Admin and run:
-cd C:\Users\exo\Desktop
-. .\dotsource-exchangeshell.ps1 -onpremsession 
-$gmb = get-mailbox -Resultsize Unlimited | ?{$_.Name -match 'ctantest'} 
-$onpremMB = $gmb | ?{$_.Name -match 'ctantest'} | Select-Object -Property @{Name="onpremMB";Expression = {$_.Name}} 
-$onpremMB | export-clixml CTAN_onpremMB_0720.xml 
+2. **Get onprem mailbox**: Open a Powershell window as Admin and run:
+`cd C:\Users\exo\Desktop`
+
+`. .\dotsource-exchangeshell.ps1 -onpremsession`
+
+`$gmb = get-mailbox -Resultsize Unlimited | ?{$_.Name -match 'ctantest'}`
+
+`$onpremMB = $gmb | ?{$_.Name -match 'ctantest'} | Select-Object -Property @{Name="onpremMB";Expression = {$_.Name}}` 
+
+`$onpremMB | export-clixml CTAN_onpremMB_0720.xml`
  
 3. **Get cloud mailbox and find the dupe**
 Open another Powershell window as Admin and run:
