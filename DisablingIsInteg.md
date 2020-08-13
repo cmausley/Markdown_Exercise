@@ -1,7 +1,7 @@
 # Disabling IsInteg
 Tuesday, September 11, 2018
 9:05 AM
- 
+
 ## Problem:
 
 IsInteg is an automatic repair code which fixes corruptions in large mailboxes, occasionally taking a long time to complete.
@@ -15,22 +15,22 @@ Without the following procedure, migration fails as items are lost during finali
 *Note: It is possible the user may have no midset corruptions. If this is the case, you may skip the following steps.*
 
 ## Solution: 
- 
+
 The customer can run the repair with the following:
 * `New-MailboxRepairRequest-CorruptionType MessageId`
 
 This would run the repair before migration, preventing the error.
- 
+
 If the error persists, attempt the following steps:
- 
+
 1. Add the following workaround to disable IsInteg:
- 
+
 `Set-ExchangeSettings MRS -CreateSettingsGroup -GroupName UnblockAlphaVilleUrbanismo -ConfigPairs @("DisableAutomaticRepair=true") -ScopeFilter "(MailboxGuid -eq '938ba0f8-9a45-432c-886b-9554bfe232aa')" -reason "CFL 876974 Fatal error JobStuckPermanentException has occurred" -ExpirationDate 10/01/2018`
- 
+
 `Set-ExchangeSettings MRS -CreateSettingsGroup -GroupName 1484159UnblockISInteg -ConfigPairs @("DisableAutomaticRepair=true") -ScopeFilter "(OrganizationName -like 'emiratesfoundationae0.onmicrosoft.com')" -reason "CFL 1484159 Store IsInteg task is pending completion" -ExpirationDate 06/06/2020`
- 
+
 2. Ask the customer to restart the migration, resulting in the following successful responses:
- 
+
 9/10/2018 12:39:55 PM (SC1P152MB0910) Setting up ISInteg repair run up front for this mailbox since it's a large mailbox. "Primary mailbox size = 14533048984
 
 Archive mailbox size = 0, Large mailbox size threshold config value = 10737418240
@@ -56,4 +56,3 @@ Archive mailbox size = 0, Large mailbox size threshold config value = 1073741824
 9/10/2018 12:41:35 PM (SC1P152MB0509) Store IsInteg task is pending completion for mailbox '938ba0f8-9a45-432c-886b-9554bfe232aa'. IsInteg RequestGuid = 'daca1077-2ab7-44bd-bab8-0b5a642b1c59'. Percentages complete: 0 .
 
 9/10/2018 12:42:06 PM (SC1P152MB0509) Store IsInteg task is pending completion for mailbox '938ba0f8-9a45-432c-886b-9554bfe232aa'. IsInteg RequestGuid =
- 
